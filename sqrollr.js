@@ -2,7 +2,7 @@
 * @title: Parallax PLugin
 * @author: Mario Esquivel
 * @created-date: 10-09-2013
-* @email: marioe@thehangar.cr
+* @email: marioexquivel@gmail.com
 */
 
 

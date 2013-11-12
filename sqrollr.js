@@ -2,7 +2,7 @@
 * @title: Parallax PLugin
 * @author: Mario Esquivel
 * @created-date: 10-09-2013
-* @email: marioe@thehangar.cr
+* @email: marioexquivel@gmail.com
 */
 
 
@@ -42,7 +42,7 @@
                 /*All the slides have to start off the viewport, top:height of the window
                 * to avoid interpolation
                 */
-                self.addData(slide, 0 ,"top:" + self.windowHeight + "px;")
+                self.addData(slide, 0 ,"top:" + self.windowHeight + "px;");
 
                 if(!slide.is(".large,.small")){
 
@@ -58,6 +58,8 @@
                 }
 
             });
+
+            self.addData(this.footer, 0 ,"top:" + self.windowHeight + "px;");
 
             self.showLoading(false);
 
@@ -90,14 +92,16 @@
             //Overwrite default variables, with users config object
             this.settings = $.extend($.fn.jerryParallax.settings, settings);
             
-            this.windowWidth = window.innerWidth;
+            this.windowWidth  = window.innerWidth;
             this.windowHeight = window.innerHeight;
             this.pxStart = 0;
 
             this.loadingScreen = $(this.settings.loadingScreen);
 
             this.slides = this.$elem.find(".slide:not(.first)");
-            this.allElemsWithData = this.$elem.find(".hasData");
+            this.allElemsWithData = $(".hasData");
+
+            this.footer = $(this.settings.footer);
                     
         },
 
@@ -219,6 +223,29 @@
                 this.innerScroll(elem);
             } else if(elem.is(".second-anim")) {
                 this.sAnim(elem);
+            }
+
+
+            /*
+            * If the page have a footer, and have to show it at the end of the page
+            */
+            if(elem.is(".last-slide")){
+
+                var footerHeight = this.footer.height();
+
+                /*
+                *The slide/footer have to scroll up the Height of the footer
+                */
+
+                this.addData(this.footer, this.pxStart ,"top:" + this.windowHeight + "px;");
+
+                this.pxStart +=  (footerHeight * this.settings.scrollRatio);
+                
+                this.addData(elem, this.pxStart ,"top:-" + footerHeight + "px;");
+
+                this.addData(this.footer, this.pxStart ,"top:" + (this.windowHeight - footerHeight) + "px;");                
+
+
             }
 
         },      
@@ -421,10 +448,11 @@
     //Global settings
     $.fn.jerryParallax.settings ={
         loadingScreen: "#loading",  
+        slides:null,
+        footer: "footer",
         time : 100, //extra pixel between animations
         backgroundChangeTime:450, // time-pixels for bg change
-        slides:null,
-        scrollRatio:2,
+        scrollRatio:1,
         skrollrConfig: null 
     };
 
